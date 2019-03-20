@@ -2,52 +2,47 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-from random import randint
 
 pygame.init()
 
 font = pygame.font.SysFont("arial", 32)
 background = pygame.image.load("Image/Background.png")
-duck = pygame.image.load("Image/Duck-Sprite.png")
-clock = pygame.time.Clock()
-surface = [(0, 0, 110, 110), (110, 0, 110, 110), (220, 0, 110, 110)]
+cross = pygame.image.load("Image/Cross.png")
+round = pygame.image.load("Image/Round.png")
 
-size_x = 1280
-size_y = 769
-position_x = 0
-position_y = 0
-milliseconds = 0
-state = 0
-life = 3
+width = 600
+height = 700
 leave = False
+turn = "Player1"
+board = [[' '] * 3 for _ in range(0, 3)]
 
-window = pygame.display.set_mode((size_x, size_y))
-pygame.display.set_caption("Mon super jeu video")
+window = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Mon super TicTacTO")
 
 while not leave:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             leave = True
-    mouse_x, mouse_y = pygame.mouse.get_pos()
-    if (mouse_x >= position_x and mouse_x <= position_x + 110 and mouse_y >= position_y
-    and mouse_y <= position_y + 110) and pygame.mouse.get_pressed()[0] is 1:
-        position_x = 0
-        position_y = randint(0, size_y - 110)
-    if life <= 0:
-        leave = True
-    clock.tick()
-    text = font.render(str(life), 3, (255, 255, 255))
-    milliseconds = milliseconds + clock.get_time()
-    position_x = position_x + 1
-    if position_x >= size_x:
-        position_x = -300
-        life = life - 1
-    if milliseconds >= 100:
-        state = (state + 1) % 3
-        milliseconds = 0
+    if pygame.mouse.get_pressed()[0]:
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        pos_x = int(mouse_x / 200)
+        pos_y = int(mouse_y / 200)
+        if turn == "Player1" and board[pos_y][pos_x] == ' ':
+            board[pos_y][pos_x] = 'x'
+            turn = "Player2"
+        elif turn == "Player2" and board[pos_y][pos_x] == ' ':
+            board[pos_y][pos_x] = 'o'
+            turn = "Player1"
+    text = font.render(turn + " turn!", 3, (255, 255, 255))
+    window.fill([127, 114, 100])
     window.blit(background, (0, 0))
-    window.blit(duck, (position_x, position_y), surface[state])
-    window.blit(text, (10, 10))
+    window.blit(text, (20, 630))
+    for y in range(0, 3):
+        for x in range(0, 3):
+            if board[y][x] == 'x':
+                window.blit(cross, (x * 200 + 50, y * 200 + 50))
+            elif board[y][x] == 'o':
+                window.blit(round, (x * 200 + 50, y * 200 + 50))
     pygame.display.update()
 
 pygame.quit()
