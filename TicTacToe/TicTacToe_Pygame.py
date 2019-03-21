@@ -3,7 +3,7 @@
 
 import pygame
 
-def draw_map(window, board, win):
+def draw_board(window, board, win):
     text_turn = font.render(turn + " turn!", 3, (255, 255, 255))
     text_win = font.render(win, 3, (255, 255, 255))
     window.fill([127, 114, 100])
@@ -75,7 +75,7 @@ while not leave:
             leave = True
     if not end:
         turn = ask_position(board, turn)
-    draw_map(window, board, win)
+    draw_board(window, board, win)
     end = end_game(board)
     if end:
         if turn == "Player1":

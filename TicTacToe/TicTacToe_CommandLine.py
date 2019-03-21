@@ -1,7 +1,7 @@
 #/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-def draw_map(board):
+def draw_board(board):
     for line in board:
         print(line)
 
@@ -43,7 +43,7 @@ board = [[' '] * 3 for _ in range(0, 3)]
 end = False
 
 while not end:
-    draw_map(board)
+    draw_board(board)
     turn = ask_position(board, turn)
     end = end_game(board)
 
